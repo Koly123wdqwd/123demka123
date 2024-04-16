@@ -1,3 +1,48 @@
+192 маска=26
+252 маска =30
+240 макска = 28
+hq
+router ospf 
+ospf router-id 1.1.1.1
+network 192.168.1.0/26 area 1
+network 10.10.10.0/30 area 0
+exit
+exit
+write
+brr
+router ospf 
+ospf router-id 3.3.3.3
+network 192.168.2.0/28 area 2
+network 10.10.10.4/30 area 0
+exit
+exit
+write
+isp
+router ospf 
+ospf router-id 2.2.2.2
+network 192.168.0.0/24 area 3
+network 10.10.10.5/30 area 0
+network 10.10.10.1/30 area 0
+exit
+exit
+write
+dhcp
+apt install isc-dhcp-server
+nano /etc/default/isc-dhcp-server
+и настроить интерфейс, направленный в сторону клиента, если в сети подразумевается DHCP-relay, то 2 интерфейса в сторону клиента, и в сторону сети откуда исходит запрос.
+Которые можно найти по путям nano /etc/dhcp/dhcpd.conf и nano /etc/dhcp/dhcpd6.conf соответственно
+subnet 10.10.10.0 natmask 255.255.255.252 {
+range 10.10.10.3 10.10.10.60;
+option routers 10.10.10.1;
+default-lease-time 600;
+max-lease-time 7200;
+}
+subnet 10.10.10.0 natmask 255.255.255.252 {
+range 10.10.10.3 10.10.10.60;
+option routers 10.10.10.1;
+default-lease-time 600;
+max-lease-time 7200;
+}
 apt install frr
 nano /etc/frr/daemons
 и изменить параметры на YES для протокола OSPF
