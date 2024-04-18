@@ -9,11 +9,35 @@ network 10.10.10.0/30 area 0
 exit
 exit
 write
+router ospf6
+ospf router-id 0.0.0.1
+area 0.0.0.0 range 2001::1:0/122
+area 0.0.0.0 range 2001::7:0/126
+interface ens///
+ipv6 ospf area 0.0.0.0
+exit
+interface ens///
+ipv6 ospf area 0.0.0.0
+exit
+exit
+write
 brr
 router ospf 
 ospf router-id 3.3.3.3
 network 192.168.2.0/28 area 2
 network 10.10.10.4/30 area 0
+exit
+exit
+write
+router ospf6
+ospf router-id 0.0.0.3
+area 0.0.0.0 range 2001::2:0/124
+area 0.0.0.0 range 2001::7:0/126
+interface ens///
+ipv6 ospf area 0.0.0.0
+exit
+interface ens///
+ipv6 ospf area 0.0.0.0
 exit
 exit
 write
@@ -23,6 +47,22 @@ ospf router-id 2.2.2.2
 network 192.168.0.0/24 area 3
 network 10.10.10.5/30 area 0
 network 10.10.10.1/30 area 0
+exit
+exit
+write
+router ospf6
+ospf router-id 0.0.0.3
+area 0.0.0.0 range 2001::3:0/120
+area 0.0.0.0 range 2001::7:2/126
+area 0.0.0.0 range 2001::7:3/126
+interface ens///
+ipv6 ospf area 0.0.0.0
+exit
+interface ens///
+ipv6 ospf area 0.0.0.0
+exit
+interface ens///
+ipv6 ospf area 0.0.0.0
 exit
 exit
 write
@@ -89,7 +129,8 @@ apt install radvd
 где interface — это имя интерфейса направленного в локальную сеть
 Min и MAX интервалы — это интервалы рассылки объявлений
 AdvSendAdvert — это разрешение на выдачу объявлений от маршрутизатор клиентам
-После окончания конфигурирования так же необходимо перезагрузить службу Radvd и отправить в Enable
+После окончания конфигурирования так же необходимо перезагрузить службу Radv
+d и отправить в Enable
 systemctl stop radvd
 systemctl start radvd
 systemctl enable radvd
@@ -111,3 +152,7 @@ iperf3 -c (ip адрес проверяемой машины) -i1 -t20
 Далее нам нужно создать сам файл для создания бэкап скрипта, для этого пропишем команду
 touch /etc/backup.sh
 зайдя в файл, необходимо прописать следующие параметры как показано на рисунке 24 или рисунке 25 (по заданию достаточно упрощённого скрипта)
+
+
+
+
